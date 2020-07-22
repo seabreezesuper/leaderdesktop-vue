@@ -1,0 +1,77 @@
+module.exports = {
+	message: {
+		hello: 'こんにちは'
+	},
+	login:{
+		title:'ログイン',
+		signin:'ログイン',
+		usernomsg:'ユーザNOを入力してください。',
+		passwordmsg: 'パスワードを入力してください。',
+		errormsg:'未入力の項目、または正しく入力されていない項目があります。',
+		catcherrormsg:'対象画面に例外が発生しました！'
+	},
+	home:{
+		header:{
+			title:'Leader Desktop管理システム',
+			username:'ユーザ名:',
+			logintime:'ログイン時間:',
+			online:'オンライン:',
+			onlinenum:'人',
+			totalvisitsnum:'アクセス数:',
+			logout:'ログアウト',
+			doLogout:'确认要退出登录吗？1'
+		},
+		menu:{
+			user:'人員管理',
+			info:'情報管理',
+			report:{
+				title:'レポート',
+				summary:'集計',
+				report4m:{
+					title:'4Mレポート',
+					report4mrecent:'本人三日内レポート',
+					report4mmain:'一般検索'
+				},
+				reward:'賞罰レポート',
+				userinfo:'人員基礎情報レポート',
+				resign:'離職レポート',
+				leavepost:'離席レポート',
+				daily:'生産日報レポート',
+				skills:'技能履歴レポート'
+			},
+			othersys:'外部システム',
+			master:{
+				title:'マスター管理',
+				menupermis:'メニュー権限管理',
+				unlockpassword:'班長パスワード',
+				linepermis:'ライン権限管理',
+				master4m:'4M管理',
+				postrelation:'プロセス管理',
+				deptbasic:'部門工程管理',
+				duty:'職務管理',
+				resign:'離職原因管理',
+				othersystem:'外部システム管理',
+				reward:'賞罰管理',
+				model:'機種管理',
+				resetpassword:'パスワードリセット',
+				notify:'通知'
+			},
+			operationlog:'操作履歴',
+			modifypwd:'パスワード修正'
+		},
+		operationlog:{
+			title:'【操作履歴】検索'
+		},
+		modifypwd:{
+			title:'人员密码修改1',
+			pwd:'密码:1',
+			confirmpwd:'确认密码:1',
+			submit:'提交1',
+			cleanup:'清空1',
+			validatePass:'请输入密码!1',
+			validatePass2:'请再次输入密码!1',
+			validatePassErr:'两次输入密码不一致!1',
+			sucess:'密码修改成功!1'
+		}
+	}
+}

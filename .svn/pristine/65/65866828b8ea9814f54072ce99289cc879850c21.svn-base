@@ -1,0 +1,64 @@
+module.exports = {
+	message: {
+		hello: '你好'
+	},
+	login:{
+		title:'登录页面',
+		signin:'登 录',
+		usernomsg:'请输入用户ID',
+		passwordmsg: '请输入密码',
+		errormsg:'未输入数据或数据输入有误！',
+		catcherrormsg:'所请求的页面有异常！'
+	},
+	home:{
+		header:{
+			title:'Leader Desktop管理系统',
+			username:'用户名:',
+			logintime:'登入时间:',
+			online:'当前在线:',
+			onlinenum:'人',
+			totalvisitsnum:'总访问量:',
+			logout:'退出'
+		},
+		menu:{
+			user:'人员管理',
+			info:'信息管理',
+			report:{
+				title:'报表查询',
+				summary:'报表汇总',
+				report4m:{
+					title:'4M报表',
+					report4mrecent:'本人三天内报表',
+					report4mmain:'一般查询'
+				},
+				reward:'奖惩报表',
+				userinfo:'人员基础信息报表',
+				resign:'离职报表',
+				leavepost:'离岗报表',
+				daily:'每日生产日报报表',
+				skills:'技能履历报表'
+			},
+			othersys:'外部系统',
+			master:{
+				title:'Master管理',
+				menupermis:'菜单权限管理',
+				unlockpassword:'班长解锁密码',
+				linepermis:'拉别权限管理',
+				master4m:'4M管理',
+				postrelation:'岗位管理',
+				deptbasic:'部门工程管理',
+				duty:'职务管理',
+				resign:'离职原因管理',
+				othersystem:'外部系统管理',
+				reward:'奖惩管理',
+				model:'机种管理',
+				resetpassword:'密码重置',
+				notify:'服务通知'
+			},
+			operationlog:'操作日志',
+			modifypwd:'密码修改'
+
+		}
+	}
+
+}

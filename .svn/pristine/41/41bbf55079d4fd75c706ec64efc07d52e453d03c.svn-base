@@ -1,0 +1,152 @@
+<!-- 【人员管理】页面 -->
+<template>
+  <div>
+    <!-- queryArea start -->
+    <div id="queryArea">
+      hello
+    </div>
+    <!-- queryArea end -->
+    
+  </div>
+</template>
+
+<script>
+//import x from ''
+export default {
+  components: {},
+  data() {
+    return {};
+  },
+  computed: {},
+  methods: {
+    handleSizeChange(val) {
+      this.pageSize = val;
+      //   this.getUserList();
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      //   this.getUserList();
+      console.log(`当前页: ${val}`);
+    }
+  },
+  mounted() {
+    // var datepicker1 = document.getElementById("datevalue1");
+    // var datepicker2 = document.getElementById("datevalue2");
+    // datepicker1.parentNode.style.width = "130px";
+    // datepicker2.parentNode.style.width = "130px";
+    // datepicker1.parentNode.style.height = "25px";
+    // datepicker2.parentNode.style.height = "25px";
+  },
+  beforeCreate() {}, //生命周期 - 创建之前
+  beforeMount() {}, //生命周期 - 挂载之前
+  beforeUpdate() {}, //生命周期 - 更新之前
+  updated() {}, //生命周期 - 更新之后
+  beforeDestroy() {}, //生命周期 - 销毁之前
+  destroyed() {}, //生命周期 - 销毁完成
+  activated() {} //如果页面有keep-alive缓存功能，这个函数会触发
+};
+</script>
+
+<style scoped>
+.el-date-picker-class {
+  border: red solid 0px;
+}
+
+.elformtitle {
+  font-size: 18px;
+}
+
+.el-form table {
+  width: 100%;
+  background-color: #ffffff;
+  border: 0;
+  margin: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+.el-form tr {
+  background-color: #e0dfde;
+  border-color: #000000;
+}
+.el-form td {
+  padding: 0;
+  border: 1px solid #ffffff;
+  text-align: center;
+  padding-left: 10;
+}
+
+#page {
+  height: 35px;
+  /* width: 100%; */
+  width: auto;
+  margin: auto;
+
+  background-color: #228fbd;
+  font-size: 10px;
+  text-align: left;
+  color: black;
+}
+
+#resultArea {
+  text-align: center;
+  width: 100%;
+}
+
+#resultArea table {
+  width: 100%;
+  background-color: #ffffff;
+  line-height: 25px;
+  font-size: 12px;
+  border: 0;
+  margin: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+#resultArea tr {
+  background-color: #e4edf9;
+  border-color: #000000;
+}
+
+#resultArea th {
+  padding: 0;
+  background-color: #dfdfdf;
+  border: 0px solid #f50606;
+}
+
+#resultArea td {
+  padding: 0;
+  border: 1px solid #ffffff;
+  word-wrap: break-word;
+}
+
+#resultArea .resultData {
+  background-color: #dfdfdf;
+  border-color: #000000;
+  height: 100%;
+}
+
+#resultArea a:visited {
+  color: #8000ff;
+}
+
+#resultArea .hidden {
+  display: none;
+}
+
+.shortwidth {
+  padding: 0;
+  border: 1px solid #ffffff;
+  width: 10%;
+}
+.content {
+  margin: 0 auto;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 40%;
+}
+</style>

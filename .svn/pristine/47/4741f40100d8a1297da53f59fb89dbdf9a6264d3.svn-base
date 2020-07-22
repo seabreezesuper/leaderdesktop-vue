@@ -1,0 +1,241 @@
+<template>
+  <el-container id="bg">
+    <el-header class="header">
+      <el-row>
+        <el-col :span="2">
+          <div class="logo-wrap">
+            <img src="../assets/logo.png" class="logo" />
+          </div>
+        </el-col>
+        <el-col :span="16">
+          <p class="ldt-title">管理系统</p>
+        </el-col>
+        <el-col :span="6" class="login-user-info">
+          <div>用户名：管理员 登入时间：2019-12-05 15:24:43</div>
+          <div>
+            <a href="#">注销</a>
+          </div>
+        </el-col>
+      </el-row>
+    </el-header>
+    <el-container>
+      <el-aside width="200px">
+        <div class="grid-content bg-purple">
+          <div>
+            <el-menu
+              :default-active="activeIndex2"
+              class="el-menu-demo"
+              mode="vertical"
+              @select="handleSelect"
+              background-color="#545c64"
+              text-color="#fff"
+              active-text-color="#ffd04b"
+              router
+            >
+              <el-menu-item index="1" disabled>
+                <svg-icon icon-class="user" class="padding-right" />人员管理
+              </el-menu-item>
+              <el-menu-item index="400">
+                <svg-icon icon-class="edit" class="padding-right" />信息管理
+              </el-menu-item>
+              <el-submenu index="3">
+                <template slot="title">
+                  <svg-icon icon-class="search" class="padding-right" />报表查询
+                </template>
+                <el-menu-item index="3-1">
+                  <svg-icon icon-class="table" class="padding-right" />报表汇总
+                </el-menu-item>
+                <el-menu-item index="/report/report4m">
+                  <svg-icon icon-class="form" class="padding-right" />4M报表
+                </el-menu-item>
+                <el-menu-item index="3-2">
+                  <svg-icon icon-class="zans" class="padding-right" />奖惩报表
+                </el-menu-item>
+                <el-menu-item index="3-3">
+                  <svg-icon icon-class="bussinessman" class="padding-right" />人员基础信息报表
+                </el-menu-item>
+                <el-menu-item index="3-4">
+                  <svg-icon icon-class="plane" class="padding-right" />离职报表
+                </el-menu-item>
+                <el-menu-item index="3-5">
+                  <svg-icon icon-class="go" class="padding-right" />离岗报表
+                </el-menu-item>
+                <el-menu-item index="3-6">
+                  <svg-icon icon-class="tools-hardware" class="padding-right" />每日生产日报报表
+                </el-menu-item>
+              </el-submenu>
+              <el-menu-item index="500">
+                <svg-icon icon-class="link" class="padding-right" />外部系统
+              </el-menu-item>
+              <el-submenu index="5">
+                <template slot="title">
+                  <svg-icon icon-class="message" class="padding-right" />Master管理
+                </template>
+                <el-menu-item index="5-3">
+                  <svg-icon icon-class="star" class="padding-right" />菜单权限管理
+                </el-menu-item>
+                <el-menu-item index="/master/unlockpassword">
+                  <svg-icon icon-class="password" class="padding-right" />班长解锁密码
+                </el-menu-item>
+                <el-menu-item index="/master/linepermission">
+                  <svg-icon icon-class="member-done" class="padding-right" />拉别权限管理
+                </el-menu-item>
+                <el-menu-item index="/master/master4m">
+                  <svg-icon icon-class="chart" class="padding-right" />4M管理
+                </el-menu-item>
+                <el-menu-item index="/master/postrelation">
+                  <svg-icon icon-class="packing-labeling" class="padding-right" />岗位管理
+                </el-menu-item>
+                <el-menu-item index="/master/deptbasic">
+                  <svg-icon icon-class="process" class="padding-right" />部门工程管理
+                </el-menu-item>
+                <el-menu-item index="/master/membertype">
+                  <svg-icon icon-class="bussinessman" class="padding-right" />职务管理
+                </el-menu-item>
+                <el-menu-item index="/master/resign">
+                  <svg-icon icon-class="survey" class="padding-right" />离职原因管理
+                </el-menu-item>
+                <el-menu-item index="/master/othersystem">
+                  <svg-icon icon-class="customs-clearance" class="padding-right" />外部系统管理
+                </el-menu-item>
+                <el-menu-item index="/master/reward">
+                  <svg-icon icon-class="medal_fill_light" class="padding-right" />奖惩管理
+                </el-menu-item>
+                <el-menu-item index="/master/machinegroup">
+                  <svg-icon icon-class="electronics" class="padding-right" />机种管理
+                </el-menu-item>
+                <el-menu-item index="/master/resetpassword">
+                  <svg-icon icon-class="eye" class="padding-right" />密码重置
+                </el-menu-item>
+                <el-menu-item index="/master/websocket">
+                  <svg-icon icon-class="noticefill" class="padding-right" />服务通知
+                </el-menu-item>
+              </el-submenu>
+              <el-menu-item index="6">
+                <svg-icon icon-class="file" class="padding-right" />操作日志
+              </el-menu-item>
+              <el-menu-item index="7">
+                <svg-icon icon-class="password" class="padding-right" />密码管理
+              </el-menu-item>
+            </el-menu>
+          </div>
+        </div>
+      </el-aside>
+      <el-main>
+        <transition name="fade">
+          <router-view></router-view>
+        </transition>
+      </el-main>
+    </el-container>
+  </el-container>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      activeIndex2: "/"
+    };
+  },
+  methods: {
+    handleSelect() {}
+  }
+};
+</script>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#app,
+.el-container {
+  padding: 0px;
+  margin: 0px;
+  height: 100%;
+}
+
+.el-aside {
+  background-color: #545c64;
+}
+
+.border {
+  border-right: #000000 1px solid;
+  border-top: #000000 1px solid;
+  border-left: #000000 1px solid;
+  border-bottom: #000000 1px solid;
+}
+
+.header {
+  background-color: #efefef;
+  width: 100%;
+}
+
+.ldt-title {
+  margin: 0px;
+  padding-left: 50px;
+  float: left;
+  width: 1050;
+  font-size: 40px;
+  font-weight: bold;
+  font-family: Arial;
+  color: #000000;
+  position: relative;
+  text-shadow: 1px 1px 2px #80ffff;
+  margin-bottom: 5px;
+  margin-top: -3px;
+  text-align: center;
+}
+
+.login-user-info {
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+.logo {
+  height: 60px;
+}
+
+.logo-wrap {
+  height: 60px;
+  text-align: center;
+}
+
+.bread-crumb {
+  height: 60px;
+  margin-left: 20px;
+  line-height: 20px;
+}
+
+.padding-right {
+  padding-right: 10px;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+
+/* #bg {
+  margin:0px; 
+  background: url(./assets/logo.png) no-repeat; 
+  background-size:100% 100%; 
+  background-attachment:fixed;
+} */
+</style>

@@ -1,0 +1,67 @@
+<template>
+  <div id="app" @mousemove="moveEvent" @click="moveEvent">
+    <router-view></router-view>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "App",
+  /**
+   * 监听浏览器刷新
+   */
+  data() {
+    return {
+      timmer: null
+    };
+  },
+
+  methods: {
+    moveEvent() {
+      //				console.log("清除了定时器！！！！！")
+      let path = ["/"];
+      if (!path.includes(this.$route.path)) {
+        //如果不是登录页面的话页面停止进行30分钟后清空session
+        clearTimeout(this.timmer);
+        this.init();
+      }
+    },
+
+    init() {
+      console.log("设置定时器");
+      this.timmer = setTimeout(() => {
+        //清除session
+        sessionStorage.removeItem("sessionData");
+        sessionStorage.clear();
+
+        //跳往登录页面
+        var app = document.getElementById("app");
+        app.style.background = "url(" + require("./assets/img/login.jpg") + ") no-repeat";
+        app.style.background = 
+
+        this.$router.push({
+          path: "/"
+        });
+      }, 30 * 60 * 1000); //设置半小时清空session进入屏保
+    }
+  }
+};
+</script>
+
+<style scoped>
+#app {
+  background: url(./assets/img/login.jpg) no-repeat;
+  background-size: cover;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+}
+
+.router-view {
+  margin: 0;
+  padding: 0;
+  border: solid 1px red;
+}
+</style>

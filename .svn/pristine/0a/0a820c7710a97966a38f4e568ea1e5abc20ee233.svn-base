@@ -1,0 +1,45 @@
+import Vue from 'vue'
+import App from './App.vue'
+
+// 引入element-ui
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+
+// 引入路由和路由配置
+import VueRouter from 'vue-router'
+import routerConfig from './router/index.js';
+
+// 引入iconfont
+import './assets/icons'
+
+// 引入axios
+import Axios from 'axios'
+import VueAxios from 'vue-axios'
+
+// 引入VueSession
+import VueSession from 'vue-session'
+
+Axios.defaults.baseURL = 'http://localhost:8101/'
+Axios.defaults.withCredentials=true;
+
+Axios.interceptors.request.use(config => {
+	if (/get/i.test(config.method)) { //判断get请求
+		config.params  =  config.params || {};
+		config.params.t = Date.parse(new Date())/1000; //添加时间戳
+	}
+    return config;
+}, error => {
+    return Promise.reject(error);
+})
+
+Vue.use(ElementUI);
+Vue.use(VueRouter);
+Vue.use(VueAxios,Axios);
+Vue.use(VueSession)
+
+const router = new VueRouter(routerConfig); 
+
+new Vue({
+  router,
+  render: h => h(App),
+}).$mount('#app')

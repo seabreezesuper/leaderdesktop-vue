@@ -1,0 +1,419 @@
+
+<template>
+  <div>
+  <!-- queryArea start -->
+    <div id="queryArea">
+      <el-form refs="operationLogForm">
+        <table>
+          <tr>
+            <td colspan="7" class="elformtitle">【操作日志】查询</td>
+          </tr>
+          <tr>
+            <td>
+              工号:&nbsp;
+              <input
+                v-model="userno"
+                placeholder="请输入工号"
+                id="userno"
+                name="userno"
+                type="text"
+              />
+            </td>
+            <td>
+              姓名:&nbsp;
+              <input
+                v-model="username"
+                placeholder="请输入姓名"
+                id="username"
+                name="username"
+                type="text"
+              />
+            </td>
+            <td>
+              操作日期:
+              <el-date-picker
+                id="datevalue1"
+                class="el-date-picker-class"
+                v-model="datevalue1"
+                align="right"
+                type="date"
+                size="mini"
+                placeholder="开始日期"
+                :picker-options="pickerOptions"
+                @change="dateChange"
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+              <span>&nbsp;至&nbsp;</span>
+              <el-date-picker
+                id="datevalue2"
+                class="el-date-picker-class"
+                v-model="datevalue2"
+                align="right"
+                type="date"
+                size="mini"
+                placeholder="结束日期"
+                :picker-options="pickerOptions"
+                @change="dateChange"
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+            </td>
+            <td>
+              操作内容:
+              <input
+                v-model="op_content"
+                placeholder="请输入操作内容"
+                id="op_content"
+                name="op_content"
+                type="text"
+              />
+            </td>
+            <td>
+              <input type="button" class="btnS" value="查询" @click="getList" />&nbsp;
+            </td>
+            <td>
+              <input type="button" class="btnS" value="重置" @click="funClear" />&nbsp;
+            </td>
+            <td>
+              <input type="button" id="downloadbtn" class="btnS" value="下载" @click="handleDownLoad" disabled />
+            </td>
+          </tr>
+        </table>
+      </el-form>
+    </div>
+    <!-- queryArea end -->
+    <div id="page" v-if="recordList != null">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[20, 50, 100, 200]"
+        :page-size="pageSize"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="currentTotal"
+      ></el-pagination>
+    </div>
+
+    <div id="resultArea">
+      <table>
+        <thead>
+          <th class="shortwidth">序号</th>
+          <th class="shortwidth">工号</th>
+          <th class="shortwidth">姓名</th>
+          <th class="shortwidth">操作类别</th>
+          <th class="content">操作内容</th>
+          <th>操作者IP</th>
+          <th>操作时间</th>
+        </thead>
+        <tbody v-if="recordList == null" :class="resultData">
+          <tr :class="resultData">
+            <td colspan="7">暂无数据</td>
+          </tr>
+        </tbody>
+        <tbody v-if="recordList != null">
+          <tr v-for="ol in recordList.recordList" :key="ol.serialNO">
+            <td class="shortwidth">{{ol.serialNO}}</td>
+            <td class="shortwidth">{{ol.usrno}}</td>
+            <td class="shortwidth">{{ol.userName}}</td>
+            <td class="shortwidth">{{ol.operateType}}</td>
+            <td :title="ol.operateContent" :class="content">{{ol.operateContent}}</td>
+            <td>{{ol.operateIP}}</td>
+            <td>{{ol.operateDT|moment}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      userno: "",
+      username: "",
+      datevalue: "",
+      op_content: "",
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now();
+        },
+        shortcuts: [
+          {
+            text: "今天",
+            onClick(picker) {
+              picker.$emit("pick", new Date());
+            }
+          },
+          {
+            text: "昨天",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24);
+              picker.$emit("pick", date);
+            }
+          },
+          {
+            text: "一周前",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", date);
+            }
+          }
+        ]
+      },
+      datevalue1: "",
+      datevalue2: "",
+      recordList: {
+        recordList: []
+      },
+      currentPage: 1,
+      currentTotal: 0,
+      pageSize: 50,
+      clickflag:false
+    };
+  },
+  methods: {
+    getList: async function() {
+      // axios提交数据
+      if (this.dateChange() < 0) {
+        alert("开始日期不能大于结束日期！");
+      } else {
+        var startdt = this.datevalue1;
+        var enddt = this.datevalue2;
+        var postData = {
+          userid: this.userno,
+          username: this.username,
+          opContent: this.op_content,
+          logstart: startdt,
+          logend: enddt,
+          limit: this.pageSize,
+          page: this.currentPage
+        };
+        await this.axios({
+          method: "post",
+          url: "/getList",
+          data: postData
+        })
+          .then(res => {
+            // ajax请求返回200
+            //console.log(res);
+            if (res.status == 200) {
+              this.recordList.recordList = res.data.recordList;
+              this.currentTotal = res.data.recordCount;
+              var downloadbtn = document.getElementById("downloadbtn");
+              if (this.currentTotal > 0) {
+                downloadbtn.disabled = false;
+              } else {
+                downloadbtn.disabled = true;
+              }
+            } else {
+              this.$message({
+                type: "error",
+                message: res.status
+              });
+            }
+          })
+          .catch(err => {
+            this.$message({ type: "error", message: err });
+            //   this.$message({ type: "error", message: "所请求的页面有异常！" });
+            console.log(err);
+          });
+      }
+    },
+    funClear() {
+      this.datevalue1 = "";
+      this.datevalue2 = "";
+      this.userno = "";
+      this.username = "";
+      this.op_content = "";
+      this.pageSize = 50;
+      this.currentPage = 1;
+      this.recordList.recordList = null;
+      this.currentTotal = 0;
+      var downloadbtn = document.getElementById("downloadbtn");
+      downloadbtn.disabled = true;
+      this.clickflag=false;
+    },
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.getList();
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.getList();
+      console.log(`当前页: ${val}`);
+    },
+    dateChange() {
+      this.$nextTick(() => {
+        var starttime = document.getElementById("datevalue1").value.trim();
+        var endtime = document.getElementById("datevalue2").value.trim();
+        if (
+          starttime != null &&
+          starttime != "" &&
+          endtime != null &&
+          endtime != ""
+        ) {
+          var checkTime = this.getDate(endtime) - this.getDate(starttime);
+          if (checkTime < 0) {
+            alert("开始日期不能大于结束日期！");
+          }
+        }
+      });
+    },
+    getDate(date) {
+      if (date != null) {
+        var dates = date.split("-");
+        var dateReturn = "";
+        for (var i = 0; i < dates.length; i++) {
+          dateReturn += dates[i];
+        }
+        return dateReturn;
+      }
+    },
+    handleDownLoad:function() {
+      var userid = this.userno; // 工号
+      var username = this.username; //姓名
+      var logstart = this.datevalue1; // 起始时间
+      var logend = this.datevalue2; // 结束时间
+      var opcontent = this.op_content;
+      var page = 1; // 当前页数
+      var limit = 65536; // 每页条数
+      this.handleClickDLbtn();
+      if (this.clickflag){      
+        window.location.href =
+          "http://172.16.183.129:8101/logdownload?" + "userid=" + userid + "&username=" +
+          encodeURIComponent(username) + "&logstart=" + logstart + "&logend=" +
+          logend + "&opContent=" + encodeURIComponent(opcontent) + "&page=" +
+          page + "&limit=" + limit;
+      }
+    },
+    handleClickDLbtn:function(){ 
+      var iCount=10000;
+      // if (this.currentTotal>=20000){
+      //   iCount = 15000;
+      // }
+      this.clickflag=true;      
+      var downloadbtn = document.getElementById("downloadbtn");
+      downloadbtn.disabled = true;
+      setTimeout(() => {
+        this.clickflag=false;
+        downloadbtn.disabled=false;
+      },iCount);      
+    }
+  },
+  mounted() {
+    var datepicker1 = document.getElementById("datevalue1");
+    var datepicker2 = document.getElementById("datevalue2");
+    datepicker1.parentNode.style.width = "130px";
+    datepicker1.parentNode.style.height = "30px";
+    datepicker2.parentNode.style.width = "130px";
+    datepicker2.parentNode.style.height = "30px";
+  }
+};
+</script>
+
+<style scoped>
+
+.el-date-picker-class {
+  border: red solid 0px;
+}
+
+.elformtitle {
+  font-size: 18px;
+}
+
+.el-form table {
+  width: 100%;
+  background-color: #ffffff;
+  border: 0;
+  margin: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+.el-form tr {
+  background-color: #e0dfde;
+  border-color: #000000;
+}
+.el-form td {
+  padding: 0;
+  border: 1px solid #ffffff;
+  text-align: center;
+  padding-left: 10;
+}
+
+#page {
+  height: 35px;
+  /* width: 100%; */
+  width: auto;
+  margin: auto;
+
+  background-color: #228fbd;
+  font-size: 10px;
+  text-align: left;
+  color: black;
+}
+
+#resultArea {
+  text-align: center;
+  width: 100%;
+}
+
+#resultArea table {
+  width: 100%;
+  background-color: #ffffff;
+  line-height: 25px;
+  font-size: 12px;
+  border: 0;
+  margin: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+#resultArea tr {
+  background-color: #e4edf9;
+  border-color: #000000;
+}
+
+#resultArea th {
+  padding: 0;
+  background-color: #dfdfdf;
+  border: 0px solid #f50606;
+}
+
+#resultArea td {
+  padding: 0;
+  border: 1px solid #ffffff;
+  word-wrap: break-word;
+}
+
+#resultArea .resultData {
+  background-color: #dfdfdf;
+  border-color: #000000;
+  height: 100%;
+}
+
+#resultArea a:visited {
+  color: #8000ff;
+}
+
+#resultArea .hidden {
+  display: none;
+}
+
+.shortwidth {
+  padding: 0;
+  border: 1px solid #ffffff;
+  width: 10%;
+}
+.content {
+  margin: 0 auto;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 40%;
+}
+</style>

@@ -1,0 +1,62 @@
+module.exports = {
+	message: {
+		hello: 'hello'
+	},
+	login: {
+		title: 'Login',
+		signin: 'Sign in',
+		usernomsg: 'Please input userID',
+		passwordmsg: 'Please input password',
+		errormsg: 'No data input or wrong data input！',
+		catcherrormsg: 'The requested page has an exception！'
+	},
+	home: {
+		header: {
+			title: 'Leader Desktop Manager System',
+			username: 'Username:',
+			logintime: 'Login Time:',
+			online:'Currently online:',
+			onlinenum:'',
+			totalvisitsnum:'Total visits Num',
+			logout:'Sign out'
+		},
+		menu:{			
+			user:'Member',
+			info:'Info',
+			report:{
+				title:'Reports',
+				summary:'Summary',
+				report4m:{
+					title:'4M Report',
+					report4mrecent:'My report within three days',
+					report4mmain:' General query'
+				},
+				reward:'Reward Report',
+				userinfo:'Member Information Report',
+				resign:'Resign Rport',
+				leavepost:'Leavepost Report',
+				daily:'Daily Report',
+				skills:'Skills Report'
+			},
+			othersys:'External System',
+			master:{
+				title:'Master',
+				menupermis:'Menu Permission',
+				unlockpassword:'Password Unlock',
+				linepermis:'Line Permission',
+				master4m:'4M Master',
+				postrelation:'Post Master',
+				deptbasic:'Dept Master',
+				duty:'Duty Master',
+				resign:'Resign Reason',
+				othersystem:'Other System Master',
+				reward:'Reward Master',
+				model:'Model Master',
+				resetpassword:'Reset Password',
+				notify:'Notify'
+			},
+			operationlog:'Operation Log',
+			modifypwd:'Modify Password'
+		}
+	}
+}

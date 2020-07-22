@@ -1,0 +1,62 @@
+module.exports = {
+	message: {
+		hello: 'こんにちは'
+	},
+	login: {
+		title: '登录页面1',
+		signin: '登 录1',
+		usernomsg: '请输入用户ID1',
+		passwordmsg: '请输入密码1',
+		errormsg: '未输入数据或数据输入有误！1',
+		catcherrormsg: '所请求的页面有异常！1'
+	},
+	home: {
+		header: {
+			title: 'Leader Desktop管理システム',
+			username: '用户名:1',
+			logintime: '登入时间:1',
+			online:'当前在线:1',
+			onlinenum:'人1',
+			totalvisitsnum:'总访问量:1',
+			logout:'退出1'
+		},
+		menu:{			
+			user:'人员管理1',
+			info:'信息管理1',
+			report:{
+				title:'报表查询1',
+				summary:'报表汇总1',
+				report4m:{
+					title:'4M报表1',
+					report4mrecent:'本人三天内报表1',
+					report4mmain:'一般查询1'
+				},
+				reward:'奖惩报表1',
+				userinfo:'人员基础信息报表1',
+				resign:'离职报表1',
+				leavepost:'离岗报表1',
+				daily:'每日生产日报报表1',
+				skills:'技能履历报表1'
+			},
+			othersys:'外部系统1',
+			master:{
+				title:'Master管理1',
+				menupermis:'菜单权限管理1',
+				unlockpassword:'班长解锁密码1',
+				linepermis:'拉别权限管理1',
+				master4m:'4M管理1',
+				postrelation:'岗位管理1',
+				deptbasic:'部门工程管理1',
+				duty:'职务管理1',
+				resign:'离职原因管理1',
+				othersystem:'外部系统管理1',
+				reward:'奖惩管理1',
+				model:'机种管理1',
+				resetpassword:'密码重置1',
+				notify:'服务通知1'
+			},
+			operationlog:'操作日志1',
+			modifypwd:'密码修改1'
+		}
+	}
+}

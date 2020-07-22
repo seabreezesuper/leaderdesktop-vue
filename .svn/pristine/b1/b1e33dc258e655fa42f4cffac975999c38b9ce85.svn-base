@@ -1,0 +1,86 @@
+<!-- 组件说明 -->
+<template>
+  <div class="main">
+    <tr>
+    <video id="video" height="324" autoplay></video>
+    <canvas id="canvas" width="576" height="324"></canvas>
+    </tr>
+    <tr>
+    <button id="rec" @click="onBtnRecordClicked">Record</button>
+    <button id="rec" @click="onBtnSnapshotClicked">Snapshot</button>
+    <button id="stop" @click="onBtnStopClicked" disabled>Stop</button>
+    </tr>
+  </div>
+</template>
+
+<script>
+//import x from ''
+export default {
+  components: {},
+  data() {
+    return {
+      mediaStreamTrack: "",
+    };
+  },
+  computed: {},
+  methods: {
+    onBtnRecordClicked() {
+      var _this = this;
+      var recBtn = document.querySelector("button#rec");
+      var stopBtn = document.querySelector("button#stop");
+      var video = document.getElementById("video");
+
+      // Get access to the camera!
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        // Not adding `{ audio: true }` since we only want video now
+        navigator.mediaDevices
+          .getUserMedia({ video: true })
+          .then(function(stream) {
+            //video.src = window.URL.createObjectURL(stream);
+            _this.mediaStreamTrack =
+              typeof stream.stop === "function"
+                ? stream
+                : stream.getTracks()[1];
+            video.srcObject = stream;
+            _this.video = video;
+            video.play();
+
+            recBtn.disabled = true;
+            stopBtn.disabled = false;
+          });
+      }
+    },
+    onBtnStopClicked() {
+      var recBtn = document.querySelector("button#rec");
+      var stopBtn = document.querySelector("button#stop");
+
+      // mediaRecorder.stop();
+      this.mediaStreamTrack.stop();
+      // _this.video.stop();
+
+      recBtn.disabled = false;
+      stopBtn.disabled = true;
+    },
+    onBtnSnapshotClicked() {
+      var video = document.getElementById("video");
+      var canvas = document.getElementById("canvas");
+      var context = canvas.getContext("2d");
+      context.drawImage(video, 0, 0, 576, 324);
+    }
+  },
+  mounted() {},
+  beforeCreate() {}, //生命周期 - 创建之前
+  beforeMount() {}, //生命周期 - 挂载之前
+  beforeUpdate() {}, //生命周期 - 更新之前
+  updated() {}, //生命周期 - 更新之后
+  beforeDestroy() {}, //生命周期 - 销毁之前
+  destroyed() {}, //生命周期 - 销毁完成
+  activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
+};
+</script>
+
+<style>
+.main{
+  text-align:center;
+}
+</style>

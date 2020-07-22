@@ -1,0 +1,209 @@
+<template>
+  <div>
+    <transition name="form-fade" mode="in-out">
+      <section class="form-wrapper" v-show="showLogin">
+        <h1>{{$t('login.title')}}</h1>
+        <el-form :model="loginForm" :rules="rules" ref="loginForm">
+          <el-form-item class="form-item" prop="userno">
+            <el-input v-model="loginForm.userno" placeholder="User NO"></el-input>
+          </el-form-item>
+          <el-form-item class="form-item" prop="password">
+            <el-input v-model="loginForm.password" type="password" placeholder="Password"
+              v-on:keyup.enter="onSubmit"></el-input>
+          </el-form-item>
+          <el-form-item class="button-panel">
+            <el-button class="button" @click="onSubmit">{{$t('login.signin')}}</el-button>
+          </el-form-item>
+        </el-form>
+      </section>
+    </transition>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      loginForm: {
+        userno: "",
+        password: "",
+        usernomsg:'',
+        passwordmsg:''
+      },
+      showLogin: false
+    };
+  },
+  created() {
+    //触发login页面回车事件
+    var _this = this;
+    document.onkeydown = function() {
+      var key = window.event.keyCode;
+      if (key == 13) {
+        _this.onSubmit();
+      }
+    };
+    this.$i18n.locale = window.localStorage.getItem("language") === null ? "zh" : window.localStorage.getItem("language");
+  },
+  mounted() {
+    this.showLogin = true;
+  },
+  computed: {
+      rules() {
+        return{
+          userno: [{ required: true, message: this.$t('login.usernomsg'), trigger: "blur" }],
+          password: [{ required: true, message: this.$t('login.passwordmsg'), trigger: "blur" }]
+        }
+      }
+  },
+  methods: {
+    // loginForm表单提交
+    onSubmit: function() {
+      this.$refs["loginForm"].validate(valid => {
+        if (valid) {
+          this.ajaxLogin();
+        } else {
+          this.$message({
+            type: "error",
+            message: this.$t('login.errormsg')
+          });
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    ajaxLogin: function() {
+      var params = {
+        userno: this.loginForm.userno,
+        password: this.loginForm.password
+      };
+
+      // axios提交数据
+      this.axios({
+        method: "post",
+        url: "/login",
+        data: params
+      })
+        .then(res => {
+          // ajax请求返回200
+          console.log(res.data.flag)
+          if (res.status == 200) {
+
+            if (!res.data.flag) {
+              //ElementUI的友好提示
+              this.$message({
+                type: "error",
+                message: res.data.msg
+              });
+              //登录成功
+            } else {
+              // //设置Vuex登录标志为true，默认userLogin为false
+              // this.$store.dispatch("userLogin", true);
+              // //Vuex在用户刷新的时候userLogin会回到默认值false，所以我们需要用到HTML5储存
+              // //我们设置一个名为Flag，值为isLogin的字段，作用是如果Flag有值且为isLogin的时候，证明用户已经登录了。
+              // localStorage.setItem("Flag", "isLogin");
+              //ElementUI的友好提示
+              
+              sessionStorage.setItem("sessionData", JSON.stringify(res.data));
+              console.log(JSON.parse(sessionStorage.getItem("sessionData")));
+              //登录成功后跳转到指定页面            
+              this.$router.push("/Home");
+            }
+          } else {
+            this.$message({
+              type: "error",
+              message: res.status
+            });
+          }
+        })
+        .catch(err => {
+          this.$message({ type: "error", message: err });
+          this.$message({ type: "error", message: this.$t('login.catcherrormsg') });//message: "所请求的页面有异常！"
+          console.log(err);
+        });
+    }
+  },
+  watch: {}
+};
+</script>
+
+<style scoped>
+.form-wrapper {
+  background: #fafafa;
+  margin: 12em auto;
+  padding: 0 1em;
+  max-width: 300px;
+  height: 380px;
+  color: white;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+h1 {
+  text-align: center;
+  padding: 1em 0;
+}
+
+.el-form {
+  padding: 0 1.5em;
+}
+
+.form-item {
+  margin-bottom: 2em;
+  width: 100%;
+}
+
+.form-item input {
+  background: #fafafa;
+  border: none;
+  border-bottom: 2px solid #e9e9e9;
+  color: #666;
+  font-family: "Open Sans", sans-serif;
+  font-size: 1em;
+  height: 30px;
+  transition: border-color 0.3s;
+  width: 80%;
+}
+
+.form-item input:focus {
+  border-bottom: 2px solid #c0c0c0;
+  outline: none;
+}
+
+.button-panel {
+  margin: 2em 0 0;
+  width: 100%;
+}
+
+.button-panel .button {
+  background: #f16272;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  height: 50px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.2em;
+  letter-spacing: 0.05em;
+  text-align: center;
+  text-transform: uppercase;
+  transition: background 0.3s ease-in-out;
+  width: 100%;
+}
+
+.button:hover {
+  background: #ee3e52;
+}
+
+#msgContainer p {
+  color: red;
+}
+
+.form-fade-enter-active,
+.form-fade-leave-active {
+  transition: all 1s;
+}
+
+.form-fade-enter,
+.form-fade-leave-active {
+  transform: translate3d(0, -50px, 0);
+  opacity: 0;
+}
+</style>

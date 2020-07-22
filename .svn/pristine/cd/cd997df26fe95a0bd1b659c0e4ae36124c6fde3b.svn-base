@@ -1,0 +1,416 @@
+<template>
+  <el-container id="bg">
+    <el-header class="header" height="60px">
+      <el-row>
+        <el-col :span="2">
+          <div class="logo_language">
+            <div class="logo-wrap">
+              <img src="../assets/logo.png" class="logo" />            
+            </div>
+            <div class="sys_lang">
+              <!-- {{$t('message.hello')}} -->
+              <eslLanguage></eslLanguage>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="16">
+          <p class="ldt-title">{{$t('home.header.title')}}</p>
+        </el-col>
+        <el-col :span="6" class="login-user-info">
+          <div>
+            {{$t('home.header.username')}}
+            <span class="login-user">{{loginusername}}&nbsp;</span>{{$t('home.header.logintime')}}
+            <span class="login-user">{{logindate}}</span>
+          </div>
+          <div>
+            {{$t('home.header.online')}}
+            <span class="login-user">{{onlinenum}} {{$t('home.header.onlinenum')}}&nbsp;</span>{{$t('home.header.totalvisitsnum')}}
+            <span class="login-user">{{logontotal}}</span>
+          </div>          
+          <div>
+            <el-button type="primary" plain size="mini" @click="doLogout()">{{$t('home.header.logout')}}</el-button>
+          </div>
+        </el-col>
+      </el-row>
+    </el-header>
+
+    <el-aside width="100%">
+      <div class="grid-content bg-purple">
+        <div>
+          <el-menu
+            :default-active="activeIndex2"
+            class="el-menu-demo"
+            mode="horizontal"
+            @select="handleSelect"
+            background-color="#545c64"
+            text-color="#fff"
+            active-text-color="#ffd04b"
+            router
+          >
+            <el-menu-item index="/home/user">
+              <svg-icon icon-class="user" class="padding-right" />{{$t('home.menu.user')}}
+            </el-menu-item>
+            <el-menu-item index="/home/info">
+              <svg-icon icon-class="edit" class="padding-right" />{{$t('home.menu.info')}}
+            </el-menu-item>
+            <el-submenu index="3">
+              <template slot="title">
+                <svg-icon icon-class="search" class="padding-right" />{{$t('home.menu.report.title')}}
+              </template>
+              <el-menu-item index="3-1">
+                <svg-icon icon-class="table" class="padding-right" />{{$t('home.menu.report.summary')}}
+              </el-menu-item>
+              <el-submenu index="3-1">
+                <template slot="title">
+                  <svg-icon icon-class="form" class="padding-right" />{{$t('home.menu.report.report4m.title')}}
+                </template>
+                <el-menu-item index="/report/report4mrecent">
+                  <svg-icon icon-class="form" class="padding-right" />{{$t('home.menu.report.report4m.report4mrecent')}}
+                </el-menu-item>
+                <el-menu-item index="/report/report4mmain">
+                  <svg-icon icon-class="form" class="padding-right" />{{$t('home.menu.report.report4m.report4mmain')}}
+                </el-menu-item>
+              </el-submenu>
+              <el-menu-item index="3-2">
+                <svg-icon icon-class="zans" class="padding-right" />{{$t('home.menu.report.reward')}}
+              </el-menu-item>
+              <el-menu-item index="3-3">
+                <svg-icon icon-class="bussinessman" class="padding-right" />{{$t('home.menu.report.userinfo')}}
+              </el-menu-item>
+              <el-menu-item index="3-4">
+                <svg-icon icon-class="plane" class="padding-right" />{{$t('home.menu.report.resign')}}
+              </el-menu-item>
+              <el-menu-item index="3-5">
+                <svg-icon icon-class="go" class="padding-right" />{{$t('home.menu.report.leavepost')}}
+              </el-menu-item>
+              <el-menu-item index="3-6">
+                <svg-icon icon-class="tools-hardware" class="padding-right" />{{$t('home.menu.report.daily')}}
+              </el-menu-item>
+              <el-menu-item index="3-7">
+                <svg-icon icon-class="skill" class="padding-right" />{{$t('home.menu.report.skills')}}
+              </el-menu-item>
+            </el-submenu>
+            <el-menu-item index="/home/otherpage">
+              <svg-icon icon-class="link" class="padding-right" />{{$t('home.menu.othersys')}}
+            </el-menu-item>
+            <el-submenu index="5">
+              <template slot="title">
+                <svg-icon icon-class="component" class="padding-right" />{{$t('home.menu.master.title')}}
+              </template>
+              <el-menu-item index="5-3">
+                <svg-icon icon-class="star" class="padding-right" />{{$t('home.menu.master.menupermis')}}
+              </el-menu-item>
+              <el-menu-item index="/master/unlockpassword">
+                <svg-icon icon-class="password" class="padding-right" />{{$t('home.menu.master.unlockpassword')}}
+              </el-menu-item>
+              <el-menu-item index="/master/linepermission">
+                <svg-icon icon-class="member-done" class="padding-right" />{{$t('home.menu.master.linepermis')}}
+              </el-menu-item>
+              <el-menu-item index="/master/master4m">
+                <svg-icon icon-class="chart" class="padding-right" />{{$t('home.menu.master.master4m')}}
+              </el-menu-item>
+              <el-menu-item index="/master/postrelation">
+                <svg-icon icon-class="packing-labeling" class="padding-right" />{{$t('home.menu.master.postrelation')}}
+              </el-menu-item>
+              <el-menu-item index="/master/deptbasic">
+                <svg-icon icon-class="process" class="padding-right" />{{$t('home.menu.master.deptbasic')}}
+              </el-menu-item>
+              <el-menu-item index="/master/duty">
+                <svg-icon icon-class="bussinessman" class="padding-right" />{{$t('home.menu.master.duty')}}
+              </el-menu-item>
+              <el-menu-item index="/master/resign">
+                <svg-icon icon-class="survey" class="padding-right" />{{$t('home.menu.master.resign')}}
+              </el-menu-item>
+              <el-menu-item index="/master/othersystem">
+                <svg-icon icon-class="customs-clearance" class="padding-right" />{{$t('home.menu.master.othersystem')}}
+              </el-menu-item>
+              <el-menu-item index="/master/reward">
+                <svg-icon icon-class="medal_fill_light" class="padding-right" />{{$t('home.menu.master.reward')}}
+              </el-menu-item>
+              <el-menu-item index="/master/machinegroup">
+                <svg-icon icon-class="electronics" class="padding-right" />{{$t('home.menu.master.model')}}
+              </el-menu-item>
+              <el-menu-item index="/master/resetpassword">
+                <svg-icon icon-class="eye" class="padding-right" />{{$t('home.menu.master.resetpassword')}}
+              </el-menu-item>
+              <el-menu-item index="/master/websocket">
+                <svg-icon icon-class="noticefill" class="padding-right" />{{$t('home.menu.master.notify')}}
+              </el-menu-item>
+            </el-submenu>
+            <el-menu-item index="/home/operationlog">
+              <svg-icon icon-class="file" class="padding-right" />{{$t('home.menu.operationlog')}}
+            </el-menu-item>
+            <el-menu-item @click.native.prevent="dialogVisible = true">
+              <svg-icon icon-class="password" class="padding-right" />{{$t('home.menu.modifypwd')}}
+            </el-menu-item>
+          </el-menu>
+        </div>
+      </div>
+    </el-aside>
+    <el-main>
+      <router-view></router-view>
+    </el-main>
+    <el-dialog
+      title="人员密码修改"
+      :visible.sync="dialogVisible"
+      width="30%"
+      append-to-body
+      center
+      class="modifyclass"
+    >
+      <el-form
+        :model="ruleForm"
+        status-icon
+        :rules="rules"
+        ref="ruleForm"
+        label-width="100px"
+        class="demo-ruleForm"
+      >
+        <el-form-item label="密码" prop="pass">
+          <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码" prop="checkPass">
+          <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+          <el-button @click="resetForm('ruleForm')">清空</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+  </el-container>
+</template>
+
+<script>
+import eslLanguage from '@/components/esl-language'
+export default {
+  components: {
+    eslLanguage
+  },
+  data() {
+    var validatePass = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请输入密码"));
+      } else {
+        if (this.ruleForm.checkPass !== "") {
+          this.$refs.ruleForm.validateField("checkPass");
+        }
+        callback();
+      }
+    };
+    var validatePass2 = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("请再次输入密码"));
+      } else if (value !== this.ruleForm.pass) {
+        callback(new Error("两次输入密码不一致!"));
+      } else {
+        callback();
+      }
+    };
+    // var date = moment(JSON.parse(sessionStorage.getItem("sessionData")).logindate).format("YYYY-MM-DD HH:mm:ss");
+    return {
+      loginusername: JSON.parse(sessionStorage.getItem("sessionData"))
+        .loginusername,
+      logindate: JSON.parse(sessionStorage.getItem("sessionData")).logindate,
+      onlinenum: JSON.parse(sessionStorage.getItem("sessionData")).onlinenum,
+      logontotal: JSON.parse(sessionStorage.getItem("sessionData")).logontotal,
+      activeIndex2: "/",
+      dialogVisible: false,
+      ruleForm: {
+        pass: "",
+        checkPass: ""
+      },
+      rules: {
+        pass: [{ validator: validatePass, trigger: "blur" }],
+        checkPass: [{ validator: validatePass2, trigger: "blur" }]
+      }
+      ,
+      pickerOptions: {
+          disabledDate(time) {
+            return time.getTime() > Date.now();
+          },
+          shortcuts: [{
+            text: '今天',
+            onClick(picker) {
+              picker.$emit('pick', new Date());
+            }
+          }, {
+            text: '昨天',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', date);
+            }
+          }, {
+            text: '一周前',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', date);
+            }
+          }]
+        },
+        value1: ''
+        
+    };
+  },
+  mounted() {
+    //console.log(JSON.parse(sessionStorage.getItem("sessionData")));
+    var app = document.getElementById("app");
+    app.style.background = "none";
+    app.style.backgroundColor = "#DFDFDF";
+  },
+  methods: {
+    handleSelect() {},
+    doLogout: function() {
+      var result = confirm("确认要注销吗？");
+      if (result) {
+        window.location.href = "/logout";
+      }
+    },
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          alert("提交密码修改!");
+          this.$refs[formName].resetFields();
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    }
+  }
+};
+</script>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#app,
+.el-container {
+  padding: 0px;
+  margin: 0px;
+  height: 100%;
+}
+
+.el-aside {
+  background-color: #545c64;
+}
+
+.el-main {
+  padding: 0px;
+  margin: 0px;
+}
+
+.border {
+  border-right: #000000 1px solid;
+  border-top: #000000 1px solid;
+  border-left: #000000 1px solid;
+  border-bottom: #000000 1px solid;
+}
+
+.header {
+  background-color: #efefef;
+  width: 100%;
+}
+
+.ldt-title {
+  margin: 0px;
+  padding-left: 50px;
+  float: left;
+  width: 70%;
+  font-size: 35px;
+  font-weight: bold;
+  font-family: Arial;
+  color:#426d2f;
+  position: relative;
+  text-shadow: 5px 5px 8px gray;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  margin-left: 20%;
+  margin-right: 20%;
+  text-align: center;
+}
+
+.login-user-info {
+  margin-top: 2px;
+  font-size: 12px;
+}
+.login-user {
+  font-size: 15px;
+  font-weight: bold;
+  color: #06a9f5;
+}
+
+.logo {
+  margin-top: 10px;
+  margin-left: 10px;
+  height: 40px;
+}
+
+.logo_language{
+  width: 300px;
+}
+
+.logo-wrap {
+  float: left;
+  height: 60px;
+  width: 50%;
+  text-align: center;
+}
+
+.sys_lang{
+  float: right;
+  margin-top: 10px;
+}
+
+.bread-crumb {
+  height: 60px;
+  margin-left: 20px;
+  line-height: 20px;
+}
+
+.padding-right {
+  padding-right: 10px;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+
+/* #bg {
+  margin:0px; 
+  background: url(./assets/logo.png) no-repeat; 
+  background-size:100% 100%; 
+  background-attachment:fixed;
+} */
+.modifyclass {
+  font-family: "PingFang SC";
+  font-size: 20px Extra large;
+}
+.el-button--mini, .el-button--mini.is-round{
+  padding:2px 8px;
+}
+</style>

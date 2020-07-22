@@ -1,0 +1,610 @@
+<!-- 【人员管理】页面 -->
+<template>
+  <div>
+    <!-- queryArea start -->
+    <div id="queryArea">
+      <el-form refs="userForm">
+        <table>
+          <tr>
+            <td colspan="7" class="elformtitle">【人员管理】查询</td>
+          </tr>
+          <tr>
+            <td>
+              课别：
+              <select id="kbselect" name="kbselect" v-model="kbselect" @change="kbChange">
+                <option
+                  v-for="kb in kblist"
+                  :key="kb.optionKey"
+                  :value="kb.optionKey"
+                >{{ kb.optionValue}}</option>
+              </select>
+            </td>
+            <td>
+              工程：
+              <select
+                id="gcselect"
+                name="gcselect"
+                disabled="disabled"
+                v-model="gcselect"
+                @change="gcChange"
+              ></select>
+            </td>
+            <td>
+              拉别：
+              <select id="zbselect" name="zbselect" disabled="disabled" v-model="zbselect"></select>
+            </td>
+            <td>
+              日期:
+              <el-date-picker
+                id="userpdate"
+                class="el-date-picker-class"
+                v-model="userpdate"
+                align="right"
+                type="date"
+                size="mini"
+                placeholder="日期"
+                :picker-options="pickerOptions"                
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+            </td>
+            <td>
+              <el-button id="querybtn" type="primary" plain size="mini">&nbsp;查询&nbsp;</el-button>
+              <el-button id="addbtn" type="primary" plain size="mini">&nbsp;新增&nbsp;</el-button>
+            </td>            
+          </tr>
+          <tr>
+            <td>
+              资格：
+              <select id="" name="kbselect" v-model="kbselect" @change="kbChange">
+                <option
+                  v-for="kb in kblist"
+                  :key="kb.optionKey"
+                  :value="kb.optionKey"
+                >{{ kb.optionValue}}</option>
+              </select>
+            </td>
+            <td>
+              职务：
+              <select
+                id=""
+                name="gcselect"
+                disabled="disabled"
+                v-model="gcselect"
+                @change="gcChange"
+              ></select>
+            </td>
+            
+            <td colspan="2">
+              入社日期:
+              <el-date-picker
+                id="datevalue1"
+                class="el-date-picker-class"
+                v-model="datevalue1"
+                align="right"
+                type="date"
+                size="mini"
+                placeholder="开始日期"
+                :picker-options="pickerOptions"
+                @change="dateChange"
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+              <span>&nbsp;至&nbsp;</span>
+              <el-date-picker
+                id="datevalue2"
+                class="el-date-picker-class"
+                v-model="datevalue2"
+                align="right"
+                type="date"
+                size="mini"
+                placeholder="结束日期"
+                :picker-options="pickerOptions"
+                @change="dateChange"
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+            </td>            
+            <td>
+              <el-button id="dataDLbtn" type="primary" plain size="mini">数据下载</el-button>
+              <el-button id="resetbtn" type="primary" plain size="mini">重置</el-button>              
+            </td>
+          </tr>
+          <tr>
+            <td>
+              工号:&nbsp;
+              <input
+                v-model="userno"
+                placeholder="请输入工号"
+                id="userno"
+                name="userno"
+                type="text"
+              />
+            </td>
+            <td>
+              姓名:&nbsp;
+              <input
+                v-model="username"
+                placeholder="请输入姓名"
+                id="username"
+                name="username"
+                type="text"
+              />
+            </td>
+            <td>
+              日期:
+              <el-date-picker
+                id="userpdate"
+                class="el-date-picker-class"
+                v-model="userpdate"
+                align="right"
+                type="date"
+                size="mini"
+                placeholder="日期"
+                :picker-options="pickerOptions"                
+                value-format="yyyy-MM-dd"
+              ></el-date-picker>
+            </td>
+            <td>
+              操作内容:
+              <input
+                v-model="op_content"
+                placeholder="请输入操作内容"
+                id="op_content"
+                name="op_content"
+                type="text"
+              />
+            </td>
+                    
+            <td colspan="1" rowspan="2" >              
+              <el-upload
+              class="upload-demo"
+              ref="upload"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              :file-list="fileList"
+              :auto-upload="false">
+              <el-button slot="trigger" size="small" type="primary">批量上传选取文件</el-button>
+              <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>              
+            </el-upload>
+            </td>
+          </tr>
+          <tr>   
+            <td ><input type="button" value="hello"> 
+               </td>
+               <td>                 
+               <el-button plain>朴素按钮</el-button>
+                <el-button id="id1" type="primary" plain size="mini">sdddsss主要按钮</el-button>
+               </td>
+          </tr>
+        </table>
+      </el-form>
+    </div>
+    <!-- queryArea end -->
+  </div>
+</template>
+
+<script>
+//import x from ''
+export default {
+  components: {},
+  data() {
+    return {
+      userno: "",
+      username: "",
+      userpdate: "",
+      op_content: "",
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now();
+        },
+        shortcuts: [
+          {
+            text: "今天",
+            onClick(picker) {
+              picker.$emit("pick", new Date());
+            }
+          },
+          {
+            text: "昨天",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24);
+              picker.$emit("pick", date);
+            }
+          },
+          {
+            text: "一周前",
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", date);
+            }
+          }
+        ]
+      },
+      recordList: {
+        recordList: []
+      },
+      currentPage: 1,
+      currentTotal: 0,
+      pageSize: 50,
+      clickflag:false
+    };
+  },
+  computed: {},
+  methods: {
+    kbChange: function() {
+      var queryForm = this.$refs["queryForm"];
+      var dept = queryForm.kbselect.value;
+
+      if (dept != null && dept != "") {
+        // 更新工程下拉菜单
+        // axios提交数据
+        this.axios({
+          method: "get",
+          async: false,
+          cache: false,
+          url: "/ajaxGclist/" + this.loginUserId + "/" + dept
+        })
+          .then(res => {
+            // ajax请求返回200
+            //console.log(res.data.flag);
+            if (res.status == 200) {
+              if (res.data != null) {
+                var objSelect = queryForm.gcselect;
+                objSelect.innerHTML = "";
+
+                var newOption = new Option("", "");
+                objSelect.options.add(newOption);
+
+                for (var i = 0; i < res.data.length; i++) {
+                  var projectCd = res.data[i]["optionKey"];
+                  var projectName = res.data[i]["optionValue"];
+                  newOption = new Option(projectName, projectCd);
+                  objSelect.options.add(newOption);
+                }
+
+                // 如果上次有选择工程，则恢复所选项
+                var lastSelectedProject = queryForm.hidprojcd.value;
+                for (var j = 0; j < objSelect.options.length; j++) {
+                  var dept = objSelect.options[j].value;
+                  if (dept == lastSelectedProject) {
+                    objSelect.options[j].selected = true;
+                  }
+                }
+              }
+              objSelect.disabled = false;
+
+              // 清空组别,并设为disabled
+              queryForm.zbselect.innerHTML = "";
+              queryForm.zbselect.disabled = true;
+            } else {
+              this.$message({
+                type: "error",
+                message: res.status
+              });
+            }
+          })
+          .catch(err => {
+            this.$message({ type: "error", message: err });
+            this.$message({ type: "error", message: "所请求的页面有异常！" });
+            console.log(err);
+          });
+      } else {
+        // 清空modelSerial,并设为disabled
+        queryForm.gcselect.innerHTML = "";
+        queryForm.gcselect.disabled = true;
+
+        // 清空modelCode,并设为disabled
+        queryForm.zbselect.innerHTML = "";
+        queryForm.zbselect.disabled = true;
+      }
+    },
+    gcChange: function() {
+      var queryForm = this.$refs["queryForm"];
+      var dept = queryForm.kbselect.value;
+      var proj = queryForm.gcselect.value;
+
+      if (proj != null && proj != "") {
+        // 更新组别/拉别下拉菜单
+        // axios提交数据
+        this.axios({
+          method: "get",
+          url: "/ajaxZblist/" + this.loginUserId + "/" + dept + "/" + proj
+        })
+          .then(res => {
+            // ajax请求返回200
+            //console.log(res.data.flag);
+            if (res.status == 200) {
+              if (res.data != null) {
+                var objSelect = queryForm.zbselect;
+                objSelect.innerHTML = "";
+
+                var newOption = new Option("", "");
+                objSelect.options.add(newOption);
+
+                for (var i = 0; i < res.data.length; i++) {
+                  var lineCd = res.data[i]["optionKey"];
+                  var lineName = res.data[i]["optionValue"];
+                  newOption = new Option(lineName, lineCd);
+                  objSelect.options.add(newOption);
+                }
+
+                // 如果上次有选择拉别，则恢复所选项
+                var lastSelectedLine = queryForm.hidlinecd.value;
+                for (var j = 0; j < objSelect.options.length; j++) {
+                  var line = objSelect.options[j].value;
+                  if (line == lastSelectedLine) {
+                    objSelect.options[j].selected = true;
+                  }
+                }
+              }
+              objSelect.disabled = false;
+            } else {
+              this.$message({
+                type: "error",
+                message: res.status
+              });
+            }
+          })
+          .catch(err => {
+            this.$message({ type: "error", message: err });
+            this.$message({ type: "error", message: "所请求的页面有异常！" });
+            console.log(err);
+          });
+      } else {
+        // 清空modelSerial,并设为disabled
+        queryForm.gcselect.innerHTML = "";
+        queryForm.gcselect.disabled = true;
+
+        // 清空modelCode,并设为disabled
+        queryForm.zbselect.innerHTML = "";
+        queryForm.zbselect.disabled = true;
+      }
+    },    
+    funClear() {
+    alert(this.userpdate);
+      this.userno = "";
+      this.username = "";
+      this.op_content = "";
+      this.pageSize = 50;
+      this.currentPage = 1;
+      this.recordList.recordList = null;
+      this.currentTotal = 0;
+      var downloadbtn = document.getElementById("downloadbtn");
+      downloadbtn.disabled = true;
+      this.clickflag=false;
+    },
+    dateChange() {
+       alert("this.userpdate:"+this.userpdate);
+      this.$nextTick(() => {
+        var date = document.getElementById("userpdate").value.trim();
+        alert(date);
+        // if (
+        //   date != null &&
+        //   date != ""
+        // ) {
+        //   var checkTime = this.getDate(endtime) - this.getDate(starttime);
+        //   if (checkTime < 0) {
+        //     alert("开始日期不能大于结束日期！");
+        //   }
+        // }
+      });
+    },
+    getDate(date) {
+      if (date != null) {
+        var dates = date.split("-");
+        var dateReturn = "";
+        for (var i = 0; i < dates.length; i++) {
+          dateReturn += dates[i];
+        }
+        return dateReturn;
+      }
+    },
+    // handleSizeChange(val) {
+    //   this.pageSize = val;
+    //   //   this.getUserList();
+    //   console.log(`每页 ${val} 条`);
+    // },
+    // handleCurrentChange(val) {
+    //   this.currentPage = val;
+    //   //   this.getUserList();
+    //   console.log(`当前页: ${val}`);
+    // }
+  },
+  mounted() {
+    // var datepicker1 = document.getElementById("datevalue1");
+    // var datepicker2 = document.getElementById("datevalue2");
+    // datepicker1.parentNode.style.width = "130px";
+    // datepicker2.parentNode.style.width = "130px";
+    // datepicker1.parentNode.style.height = "30px";
+    // datepicker2.parentNode.style.height = "30px";
+  },
+  beforeCreate() {}, //生命周期 - 创建之前
+  beforeMount() {}, //生命周期 - 挂载之前
+  beforeUpdate() {}, //生命周期 - 更新之前
+  updated() {}, //生命周期 - 更新之后
+  beforeDestroy() {}, //生命周期 - 销毁之前
+  destroyed() {}, //生命周期 - 销毁完成
+  activated() {} //如果页面有keep-alive缓存功能，这个函数会触发
+};
+</script>
+
+<style scoped>
+/* 按钮样式 */
+.el-button--primary  {
+  width: 100px;
+}
+.el-button--mini, .el-button--mini.is-round{
+  padding: 2px 15px;
+}
+
+/* 日期样式 */
+.el-date-picker-class {
+  border: red solid 0px;  
+  width: 130px;
+  margin: 1px;
+}
+
+.el-date-picker-class /deep/ .el-input__inner{
+  height: 20px;
+  line-height: 20px;
+}
+
+.el-date-picker-class /deep/ .el-input__icon{
+  line-height: 20px;
+}
+
+#queryArea {
+  /* margin:20px 0; */
+  margin: auto;
+}
+
+#queryArea .center {
+  text-align: center;
+}
+
+#queryArea .label {
+  width: 80px;
+  text-align: center;
+  font-size: 18px;
+}
+
+#queryArea table {
+  width: 100%;
+  background-color: #ffffff;
+  font-size: 12px;
+  border: 0;
+  margin: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+#queryArea tr {
+  background-color: #e0dfde;
+  border-color: #000000;
+}
+
+#queryArea td {
+  padding: 0;
+  border: 1px solid #ffffff;
+  width: 7%;
+  text-align: center;
+  padding-left: 10;
+}
+
+#queryArea .btnM {
+  width: 90px;
+}
+
+#queryArea .title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: Arial;
+}
+
+#queryArea input {
+  width: 90px;
+}
+
+#queryArea select {
+  width: 100px;
+}
+
+.elformtitle {
+  font-size: 18px;
+}
+
+.el-form table {
+  width: 100%;
+  background-color: #ffffff;
+  border: 0;
+  margin: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+.el-form tr {
+  background-color: #e0dfde;
+  border-color: #000000;
+}
+.el-form td {
+  padding: 0;
+  border: 1px solid #ffffff;
+  text-align: center;
+  padding-left: 10;
+}
+
+#page {
+  height: 35px;
+  /* width: 100%; */
+  width: auto;
+  margin: auto;
+
+  background-color: #228fbd;
+  font-size: 10px;
+  text-align: left;
+  color: black;
+}
+
+#resultArea {
+  text-align: center;
+  width: 100%;
+}
+
+#resultArea table {
+  width: 100%;
+  background-color: #ffffff;
+  line-height: 25px;
+  font-size: 12px;
+  border: 0;
+  margin: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+#resultArea tr {
+  background-color: #e4edf9;
+  border-color: #000000;
+}
+
+#resultArea th {
+  padding: 0;
+  background-color: #dfdfdf;
+  border: 0px solid #f50606;
+}
+
+#resultArea td {
+  padding: 0;
+  border: 1px solid #ffffff;
+  word-wrap: break-word;
+}
+
+#resultArea .resultData {
+  background-color: #dfdfdf;
+  border-color: #000000;
+  height: 100%;
+}
+
+#resultArea a:visited {
+  color: #8000ff;
+}
+
+#resultArea .hidden {
+  display: none;
+}
+
+.shortwidth {
+  padding: 0;
+  border: 1px solid #ffffff;
+  width: 10%;
+}
+.content {
+  margin: 0 auto;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 40%;
+}
+</style>
