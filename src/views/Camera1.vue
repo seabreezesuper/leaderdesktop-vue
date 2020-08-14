@@ -1,7 +1,7 @@
 <!-- 组件说明 -->
 <template>
   <div class="main">
-    <div id="mask"></div>
+    <div id="mask"><img src="@/assets/img/AandB-transparent.gif" /></div>
     <tr>
       <video id="video" width="576" height="324" autoplay></video>
       <canvas id="canvas" width="300" height="300"></canvas>
@@ -11,9 +11,7 @@
       <button id="Snapshot" @click="onBtnSnapshotClicked">Snapshot</button>
       <button id="Face Scan" @click="onBtnFaceScanClicked">Face Scan</button>
       <button id="stop" @click="onBtnStopClicked" disabled>Stop</button>
-      <span>{{
-        name
-      }}</span>
+      <span>{{ name }}</span>
     </tr>
   </div>
 </template>
@@ -60,6 +58,8 @@ export default {
               var mask = document.getElementById("mask");
               mask.style.display = "block";
             };
+
+            // 动画层
 
             recBtn.disabled = true;
             stopBtn.disabled = false;
@@ -258,14 +258,220 @@ canvas {
   left: 0px;
   width: 300px;
   height: 300px;
-  filter: alpha(opacity=80);
-  opacity: 0.3;
   border: 3px dashed red;
   position: absolute;
+  animation: 3s grad infinite;
   display: none;
 }
 
+@keyframes rainbow {
+  0% {
+    background: #c00;
+  }
+  50% {
+    background: orange;
+  }
+  100% {
+    background: yellowgreen;
+  }
+}
+
+@keyframes grad {
+  0% {
+    background-image: linear-gradient(
+      to right,
+      rgba(0, 255, 0, 0.65),
+      rgba(0, 255, 0, 0.50),
+      rgba(0, 255, 0, 0.45),
+      rgba(0, 255, 0, 0.40),
+      rgba(0, 255, 0, 0.35),
+      rgba(0, 255, 0, 0.30),
+      rgba(0, 255, 0, 0.25),
+      rgba(0, 255, 0, 0.20),
+      rgba(0, 255, 0, 0.15),
+      rgba(0, 255, 0, 0.10),
+      rgba(0, 255, 0, 0)
+    );
+  }
+  5% {
+    background-image: linear-gradient(
+      to right,
+      rgba(0, 255, 0, 0.50),
+      rgba(0, 255, 0, 0.65),
+      rgba(0, 255, 0, 0.50),
+      rgba(0, 255, 0, 0.45),
+      rgba(0, 255, 0, 0.40),
+      rgba(0, 255, 0, 0.35),
+      rgba(0, 255, 0, 0.30),
+      rgba(0, 255, 0, 0.25),
+      rgba(0, 255, 0, 0.20),
+      rgba(0, 255, 0, 0.15),
+      rgba(0, 255, 0, 0.10)
+    );
+  }
+  10% {
+    background-image: linear-gradient(
+      to right,
+      rgba(0, 255, 0, 0.45),
+      rgba(0, 255, 0, 0.50),
+      rgba(0, 255, 0, 0.65),
+      rgba(0, 255, 0, 0.50),
+      rgba(0, 255, 0, 0.45),
+      rgba(0, 255, 0, 0.40),
+      rgba(0, 255, 0, 0.35),
+      rgba(0, 255, 0, 0.30),
+      rgba(0, 255, 0, 0.25),
+      rgba(0, 255, 0, 0.20),
+      rgba(0, 255, 0, 0.15)
+    );
+  }
+  15% {
+    background-image: linear-gradient(
+      to right,
+      rgba(0, 255, 0, 0.40),
+      rgba(0, 255, 0, 0.45),
+      rgba(0, 255, 0, 0.50),
+      rgba(0, 255, 0, 0.65),
+      rgba(0, 255, 0, 0.50),
+      rgba(0, 255, 0, 0.45),
+      rgba(0, 255, 0, 0.40),
+      rgba(0, 255, 0, 0.35),
+      rgba(0, 255, 0, 0.30),
+      rgba(0, 255, 0, 0.25),
+      rgba(0, 255, 0, 0.20)
+    );
+  }
+  20% {
+    background-image: linear-gradient(
+      to right,
+      rgba(0, 255, 0, 0.35),
+      rgba(0, 255, 0, 0.40),
+      rgba(0, 255, 0, 0.45),
+      rgba(0, 255, 0, 0.50),
+      rgba(0, 255, 0, 0.65),
+      rgba(0, 255, 0, 0.50),
+      rgba(0, 255, 0, 0.45),
+      rgba(0, 255, 0, 0.40),
+      rgba(0, 255, 0, 0.35),
+      rgba(0, 255, 0, 0.30),
+      rgba(0, 255, 0, 0.25)
+    );
+  }
+  25% {
+    background-image: linear-gradient(
+      to right,
+      rgba(0, 255, 0, 0.30),
+      rgba(0, 255, 0, 0.35),
+      rgba(0, 255, 0, 0.40),
+      rgba(0, 255, 0, 0.45),
+      rgba(0, 255, 0, 0.50),
+      rgba(0, 255, 0, 0.65),
+      rgba(0, 255, 0, 0.50),
+      rgba(0, 255, 0, 0.45),
+      rgba(0, 255, 0, 0.40),
+      rgba(0, 255, 0, 0.35),
+      rgba(0, 255, 0, 0.30)
+    );
+  }
+  30% {
+    background-image: linear-gradient(
+      to right,
+      rgba(0, 255, 0, 0.25),
+      rgba(0, 255, 0, 0.30),
+      rgba(0, 255, 0, 0.35),
+      rgba(0, 255, 0, 0.40),
+      rgba(0, 255, 0, 0.45),
+      rgba(0, 255, 0, 0.50),
+      rgba(0, 255, 0, 0.65),
+      rgba(0, 255, 0, 0.50),
+      rgba(0, 255, 0, 0.45),
+      rgba(0, 255, 0, 0.40),
+      rgba(0, 255, 0, 0.35)
+    );
+  }
+  35% {
+    background-image: linear-gradient(
+      to right,
+      rgba(0, 255, 0, 0.20),
+      rgba(0, 255, 0, 0.25),
+      rgba(0, 255, 0, 0.30),
+      rgba(0, 255, 0, 0.35),
+      rgba(0, 255, 0, 0.40),
+      rgba(0, 255, 0, 0.45),
+      rgba(0, 255, 0, 0.50),
+      rgba(0, 255, 0, 0.65),
+      rgba(0, 255, 0, 0.50),
+      rgba(0, 255, 0, 0.45),
+      rgba(0, 255, 0, 0.40)
+    );
+  }
+  40% {
+    background-image: linear-gradient(
+      to right,
+      rgba(0, 255, 0, 0.15),
+      rgba(0, 255, 0, 0.20),
+      rgba(0, 255, 0, 0.25),
+      rgba(0, 255, 0, 0.30),
+      rgba(0, 255, 0, 0.35),
+      rgba(0, 255, 0, 0.40),
+      rgba(0, 255, 0, 0.45),
+      rgba(0, 255, 0, 0.50),
+      rgba(0, 255, 0, 0.65),
+      rgba(0, 255, 0, 0.50),
+      rgba(0, 255, 0, 0.45)
+    );
+  }
+  45% {
+    background-image: linear-gradient(
+      to right,
+      rgba(0, 255, 0, 0.10),
+      rgba(0, 255, 0, 0.15),
+      rgba(0, 255, 0, 0.20),
+      rgba(0, 255, 0, 0.25),
+      rgba(0, 255, 0, 0.30),
+      rgba(0, 255, 0, 0.35),
+      rgba(0, 255, 0, 0.40),
+      rgba(0, 255, 0, 0.45),
+      rgba(0, 255, 0, 0.50),
+      rgba(0, 255, 0, 0.65),
+      rgba(0, 255, 0, 0.50)
+    );
+  }
+  50% {
+    background-image: linear-gradient(
+      to right,
+      rgba(0, 255, 0, 0),
+      rgba(0, 255, 0, 0.10),
+      rgba(0, 255, 0, 0.15),
+      rgba(0, 255, 0, 0.20),
+      rgba(0, 255, 0, 0.25),
+      rgba(0, 255, 0, 0.30),
+      rgba(0, 255, 0, 0.35),
+      rgba(0, 255, 0, 0.40),
+      rgba(0, 255, 0, 0.45),
+      rgba(0, 255, 0, 0.50),
+      rgba(0, 255, 0, 0.55)
+    );
+  }
+  100% {
+    background-image: linear-gradient(
+      to right,
+      rgba(0, 255, 0, 0),
+      rgba(0, 255, 0, 0),
+      rgba(0, 255, 0, 0),
+      rgba(0, 255, 0, 0),
+      rgba(0, 255, 0, 0),
+      rgba(0, 255, 0, 0),
+      rgba(0, 255, 0, 0),
+      rgba(0, 255, 0, 0),
+      rgba(0, 255, 0, 0),
+      rgba(0, 255, 0, 0),
+      rgba(0, 255, 0, 0)
+    );
+  }
+}
+
 span {
-  color:white;
+  color: white;
 }
 </style>
